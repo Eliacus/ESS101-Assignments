@@ -1,3 +1,5 @@
+%% Question 1a
+
 syms theta phi L phi_dot theta_dot m2 g m1
 
 p_1 = sym('p_1',[3,1],'real');
