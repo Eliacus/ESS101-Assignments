@@ -1,37 +1,39 @@
 %% Question 1a
-
+clc
 % Defining variables
 syms theta phi L phi_dot theta_dot m2 g m1 u real
 u = sym('u',[3,1],'real');
-p_1 = sym('p_1',[3,1],'real');
-p_1_dot = sym('p_1_dot',[3,1],'real');
+p1 = sym('p1_',[3,1],'real');
+dp1 = sym('dp1_',[3,1],'real');
 
 % Setting up q vector and q_dot
-q = [p_1; theta; phi];
-q_dot = [p_1_dot; theta_dot; phi_dot];
+q = [p1; theta; phi];
+dq = [dp1; theta_dot; phi_dot];
 
 % Setting up p_2 and p_2_dot
-p_2 = [p_1(1) + cos(theta)*sin(phi)*L;
-      p_1(2) + sin(theta)*sin(phi)*L;
-       p_1(3)-L*cos(phi)]; 
-p_2_dot = jacobian(p_2,q)*q_dot;
+p2 = [p1(1) + cos(theta)*sin(phi)*L;
+      p1(2) + sin(theta)*sin(phi)*L;
+       p1(3)-L*cos(phi)]; 
+dp2 = jacobian(p2,q)*dq;
 
 % Kinetic energy
-T_1 = (1/2)*m1*(p_1_dot)'*p_1_dot; 
-T_2 = (1/2)*m2*(p_2_dot)'*p_2_dot; 
+T_1 = (1/2)*m1*(dp1)'*dp1; 
+T_2 = (1/2)*m2*(dp2)'*dp2; 
+T = T_1 + T_2;
 
 % Potential energy
-V_1 = m1*g*[0 0 1]*p_1;
-V_2 = m2*g*[0 0 1]*p_2;
+V_1 = m1*g*[0 0 1]*p1;
+V_2 = m2*g*[0 0 1]*p2;
+V = V_1 + V_2;
 
 % Lagrangian
-L = (T_1+T_2)-(V_1+V_2);
+L = T-V;
 
 % External force vector
 F = [u; 0; 0];
 
-% Gradient of L wrt q_dot
-L_gradient_q_dot = (jacobian(L,q_dot))';
+% Gradient of L wrt dq  ( = W(q)dq )
+L_gradient_q_dot = (jacobian(L,dq))';
 
 % Gradient of L wrt q
 L_gradient_q  = (jacobian(L,q))';
@@ -40,7 +42,7 @@ L_gradient_q  = (jacobian(L,q))';
 L_gradient_q_dot_dt = F+L_gradient_q;
 
 % Calculating d/dt(grad_qdot(L))  Eq. 2.107b last term
-W_qdot_jacobian_q_dot = jacobian(L_gradient_q_dot,q)*q_dot;
+W_qdot_jacobian_q_dot = jacobian(L_gradient_q_dot,q)*dq;
 
 % Extracting W(q)*ddq from eq 2.107b
 Mv = simplify(L_gradient_q_dot_dt - W_qdot_jacobian_q_dot);
@@ -104,6 +106,12 @@ W_ddq = grad_dq_dt_L - dq_Wdq_dq;
 
 %% Question 2a
 
+% Q = F here. 
+grad_dq_dt_L = jacobian(p1,q)'*u + grad_q_L;
+
+% Finding Mv with eq. 2.167a. 
+W_ddq = grad_dq_dt_L - dq_Wdq_dq;
+
 % Is this correct?
 W = diag([m1,m1,m1,m2,m2,m2]);
 
@@ -122,6 +130,4 @@ sol = simplify(inv(M)*c_qdqu);
 
 % We can see that the explicit form is way more complex than the implicit
 % form
-
-
 
