@@ -120,7 +120,7 @@ a = jacobian(c,q)';
 M = [W, a;
     a' 0];
 
-c_qdqu =  [W_ddq;
+c_qdqu =  [F-dq_Wdq_dq+jacobian((T_tot),q)'-jacobian((V_tot),q)';
            -jacobian(jacobian(c,q)*dq,q)*dq];
 
 
