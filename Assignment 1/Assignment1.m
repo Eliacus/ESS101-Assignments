@@ -112,8 +112,8 @@ grad_dq_dt_L = jacobian(p1,q)'*u + grad_q_L;
 % Finding Mv with eq. 2.167a. 
 W_ddq = grad_dq_dt_L - dq_Wdq_dq;
 
-% Is this correct?
-W = diag([m1,m1,m1,m2,m2,m2]);
+% Computing the W matrix
+W = jacobian(grad_dq_L,dq);
 
 a = jacobian(c,q)';
 
