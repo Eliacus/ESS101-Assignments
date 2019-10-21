@@ -17,7 +17,7 @@ for i=1:s
     catch 
         k(i,:) = f(xk + dt.*asum);
     end
-        bsum = bsum + butcher.b(i).*k(i);
+        bsum = bsum + butcher.b(i).*k(i,:);
 end
 xkp1 = xk + dt.*bsum;
 end
