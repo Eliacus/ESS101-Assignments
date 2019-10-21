@@ -59,7 +59,6 @@ ode = diff(x) == x*lambda;
 xsol(t) = dsolve(ode,x(0) == 1);
 
 
-
 t = 0:dt:tf;
 plot(t,(xsol(t)),'--','Linewidth',1.5)
 
