@@ -87,13 +87,13 @@ f = @(x) [x(2);
 
 
 % Tolerance 
-tol = 1e-2;
+tol = 1e-4;
 
 % Constants
 dt = 1e-2;
 tf = 25;
 N = tf/dt;
-alpha = 0.1;
+alpha = 0.01;
 
 % K
 
